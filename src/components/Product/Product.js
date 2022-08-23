@@ -1,7 +1,6 @@
 import './Product.css';
 
 function Product (props) {
-    console.log(props)
     return (
         <div>
             <img className='product-image' src={props.image} alt={props.title}  />
