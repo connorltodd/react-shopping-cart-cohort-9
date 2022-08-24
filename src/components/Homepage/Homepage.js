@@ -1,6 +1,7 @@
 import React from 'react';
 import Product from '../Product/Product';
 import axios from 'axios';
+import './Homepage.css';
 
 export default function Homepage () {
     const [products, setProducts] = React.useState([]);
@@ -64,7 +65,7 @@ export default function Homepage () {
     // )
 
     return (
-        <div>
+        <div className='product-container'>
             {console.log('render')}
             {/* <button onClick={fetchProducts}>Fetch Products</button> */}
             {products.map(

@@ -2,11 +2,11 @@ import './Product.css';
 
 function Product (props) {
     return (
-        <div>
+        <div className='product'>
             <img className='product-image' src={props.image} alt={props.title}  />
-            <h1>{props.title}</h1>
-            <p>Category: {props.category}</p>
-            <p>Price: {props.price}</p>
+            <h2 className='product-title' >{props.title}</h2>
+            <p className='product-category'>{props.category}</p>
+            <p className='product-price'>{props.price} €</p>
         </div>
     )
 }
