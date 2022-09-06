@@ -1,4 +1,4 @@
-import { BrowserRouter, Route, Routes } from 'react-router-dom';
+import { BrowserRouter, Route, Routes, Navigate } from 'react-router-dom';
 import Homepage from './components/Homepage/Homepage';
 import ProductDetail from './components/ProductDetail/ProductDetail';
 import Cart from './components/Cart/Cart';
@@ -15,10 +15,12 @@ function App() {
       <BrowserRouter>
         <Navbar />
         <Routes>
-          <Route exact path='/' element={<Homepage />}/>
-          <Route path='/detail' element={<ProductDetail />} />
+          <Route exact path='/products' element={<Homepage />}/>
+          {/* example http://localhost:3000/products/12 */}
+          <Route path='/products/:id' element={<ProductDetail />} />
           <Route path='/cart' element={<Cart />} />
           <Route path='/contact' element={<Contact />} />
+          <Route path="*" element={<Navigate to="/products" replace />} />
         </Routes>
       </BrowserRouter>
     </div>

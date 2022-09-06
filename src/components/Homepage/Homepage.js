@@ -75,7 +75,8 @@ export default function Homepage () {
                     title={item.title} 
                     price={item.price} 
                     image={item.image}
-                    category={item.category} 
+                    category={item.category}
+                    id={item.id} 
                   />
                 }
             )}
