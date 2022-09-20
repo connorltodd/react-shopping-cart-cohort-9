@@ -2,7 +2,7 @@ import React from 'react';
 import axios from 'axios';
 import { useParams } from "react-router-dom";
 
-export default function ProductDetail () {
+export default function ProductDetail (props) {
     const [selectedProduct, setSelectedProduct] = React.useState();
     const { id } = useParams();
     
@@ -17,6 +17,7 @@ export default function ProductDetail () {
             <img src={selectedProduct?.image} />
             <p>{selectedProduct?.price}</p>
             <p>{selectedProduct?.description}</p>
+            <button onClick={() => props.addProductToCart(selectedProduct)}>Add to cart</button>
         </div>
     )
 }
