@@ -13,7 +13,27 @@ function App() {
   const [cartProducts, setCartProducts] = React.useState([]);
   
   function addProductToCart (productToAdd) {
-    setCartProducts([...cartProducts, productToAdd])
+    const existingProduct = cartProducts.find(product => product.id === productToAdd.id);
+    if(existingProduct !== undefined) {
+      // increase the quantity of the product that already exists in the cart
+      existingProduct.quantity += 1;
+      const newCartProductsArray = cartProducts.map(product => 
+        product.id === existingProduct.id ? 
+          {...productToAdd, quantity: existingProduct.quantity} 
+        : 
+        product
+      )
+      setCartProducts(newCartProductsArray)
+    } else {
+      // if the product does not exist in the array inject with a quantity of 1
+      console.log('before quantity',productToAdd)
+      setCartProducts([...cartProducts, {...productToAdd, quantity: 1}])
+    }
+  }
+
+  function removeProductFromCart (productToBeRemoved) {
+    const newCartProductsArray = cartProducts.filter(product => product.id !== productToBeRemoved.id);
+    setCartProducts(newCartProductsArray)
   }
 
   return (
@@ -25,7 +45,7 @@ function App() {
           <Route exact path='/products' element={<Homepage />}/>
           {/* example http://localhost:3000/products/12 */}
           <Route path='/products/:id' element={<ProductDetail addProductToCart={addProductToCart} />} />
-          <Route path='/cart' element={<Cart cartProducts={cartProducts}  />} />
+          <Route path='/cart' element={<Cart cartProducts={cartProducts} addProductToCart={addProductToCart}  removeProductFromCart={removeProductFromCart} />} />
           <Route path='/contact' element={<Contact />} />
           <Route path="*" element={<Navigate to="/products" replace />} />
         </Routes>
