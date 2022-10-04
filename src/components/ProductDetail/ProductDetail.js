@@ -14,7 +14,7 @@ export default function ProductDetail (props) {
     return (
         <div>
             <h1>{selectedProduct?.title}</h1>
-            <img src={selectedProduct?.image} />
+            <img src={selectedProduct?.image} height={100} width={100} />
             <p>{selectedProduct?.price}</p>
             <p>{selectedProduct?.description}</p>
             <button onClick={() => props.addProductToCart(selectedProduct)}>Add to cart</button>

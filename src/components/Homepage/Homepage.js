@@ -3,7 +3,7 @@ import Product from '../Product/Product';
 import axios from 'axios';
 import './Homepage.css';
 
-export default function Homepage () {
+export default function Homepage (props) {
     const [products, setProducts] = React.useState([]);
 
     const fetchProducts = () => {
@@ -68,7 +68,16 @@ export default function Homepage () {
         <div className='product-container'>
             {console.log('render')}
             {/* <button onClick={fetchProducts}>Fetch Products</button> */}
-            {products.map(
+            {products.filter(item => 
+                props.productSearchValue !== '' ? 
+                 item.title.toLowerCase().includes(props.productSearchValue.toLowerCase()) ? item : null
+                :
+                item
+                // if the productSearchValue is empty show all products
+                // else filter the products which contain the productSearchValue within the title
+                // set product title and searchValue to lowercase to avoid case senstivie searches
+            )
+            .map(
                 function(item) {
                     return  <Product
                     key={item.id} 

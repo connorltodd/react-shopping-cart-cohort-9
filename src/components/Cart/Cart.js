@@ -19,6 +19,7 @@ export default function Cart (props) {
                     <p>{item.price}</p>
                     <p>Quantity {item.quantity}</p>
                     <p onClick={() => props.addProductToCart(item)}>+</p>
+                    {item.quantity >= 2 && <p onClick={() => props.handleProductQuantityInCart(item, false)}>-</p>}
                     <button onClick={() => props.removeProductFromCart(item)}>Delete Product</button>
                 </div>
             )

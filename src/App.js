@@ -11,19 +11,13 @@ import Contact from './components/Contact/Contact';
 // functional components and class components
 function App() {
   const [cartProducts, setCartProducts] = React.useState([]);
+  const [productSearchValue, setProductSearchValue] = React.useState('')
   
   function addProductToCart (productToAdd) {
     const existingProduct = cartProducts.find(product => product.id === productToAdd.id);
     if(existingProduct !== undefined) {
       // increase the quantity of the product that already exists in the cart
-      existingProduct.quantity += 1;
-      const newCartProductsArray = cartProducts.map(product => 
-        product.id === existingProduct.id ? 
-          {...productToAdd, quantity: existingProduct.quantity} 
-        : 
-        product
-      )
-      setCartProducts(newCartProductsArray)
+      handleProductQuantityInCart(existingProduct, true)
     } else {
       // if the product does not exist in the array inject with a quantity of 1
       console.log('before quantity',productToAdd)
@@ -31,21 +25,48 @@ function App() {
     }
   }
 
+  function handleProductQuantityInCart (productToChangeQuantity, increaseQuantity) {
+      if(increaseQuantity) {
+        productToChangeQuantity.quantity += 1;
+      } else {
+        productToChangeQuantity.quantity -= 1;
+      }
+
+      const newCartProductsArray = cartProducts.map(product => 
+        product.id === productToChangeQuantity.id ? 
+          {...productToChangeQuantity, quantity: productToChangeQuantity.quantity} 
+        : 
+        product
+      )
+      setCartProducts(newCartProductsArray)
+  }
+
   function removeProductFromCart (productToBeRemoved) {
     const newCartProductsArray = cartProducts.filter(product => product.id !== productToBeRemoved.id);
     setCartProducts(newCartProductsArray)
+  }
+
+  function handleProductSearch (searchInputValue) {
+    setProductSearchValue(searchInputValue)
   }
 
   return (
     // JSX
     <div className="App">
       <BrowserRouter>
-        <Navbar />
+        <Navbar handleProductSearch={handleProductSearch} />
         <Routes>
-          <Route exact path='/products' element={<Homepage />}/>
+          <Route exact path='/products' element={<Homepage productSearchValue={productSearchValue} />}/>
           {/* example http://localhost:3000/products/12 */}
           <Route path='/products/:id' element={<ProductDetail addProductToCart={addProductToCart} />} />
-          <Route path='/cart' element={<Cart cartProducts={cartProducts} addProductToCart={addProductToCart}  removeProductFromCart={removeProductFromCart} />} />
+          <Route path='/cart' element={
+            <Cart 
+              cartProducts={cartProducts} 
+              addProductToCart={addProductToCart}  
+              removeProductFromCart={removeProductFromCart}
+              handleProductQuantityInCart={handleProductQuantityInCart}
+              />} 
+            />
           <Route path='/contact' element={<Contact />} />
           <Route path="*" element={<Navigate to="/products" replace />} />
         </Routes>
