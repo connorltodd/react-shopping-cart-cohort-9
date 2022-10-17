@@ -50,6 +50,10 @@ function App() {
     setProductSearchValue(searchInputValue)
   }
 
+  function clearCartProducts () {
+    setCartProducts([])
+  }
+
   return (
     // JSX
     <div className="App">
@@ -65,6 +69,7 @@ function App() {
               addProductToCart={addProductToCart}  
               removeProductFromCart={removeProductFromCart}
               handleProductQuantityInCart={handleProductQuantityInCart}
+              clearCartProducts={clearCartProducts}
               />} 
             />
           <Route path='/contact' element={<Contact />} />

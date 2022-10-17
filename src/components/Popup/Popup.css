@@ -1,0 +1,21 @@
+.popup {
+    height: 100vh;
+    width: 100vw;
+    position: absolute;
+    opacity: 0.9;
+    background: grey;
+}
+
+.popup-card {
+    display: flex;
+    height: calc(100vh - 80px);
+    width: 100vw;
+    justify-content: center;
+    align-items: center;
+}
+
+.popup-card-content {
+    height: 300px;
+    width: 300px;
+    background: #fff;
+}
