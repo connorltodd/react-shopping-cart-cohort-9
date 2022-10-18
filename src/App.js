@@ -21,8 +21,11 @@ function App() {
     } else {
       // if the product does not exist in the array inject with a quantity of 1
       console.log('before quantity',productToAdd)
-      setCartProducts([...cartProducts, {...productToAdd, quantity: 1}])
+      const newCartProducts = [...cartProducts, {...productToAdd, quantity: 1}]
+      setCartProducts(newCartProducts);
+      window.localStorage.setItem('cartProductsLocalStorage', JSON.stringify(newCartProducts))
     }
+    // TODO: Use local storage to handle cart products here
   }
 
   function handleProductQuantityInCart (productToChangeQuantity, increaseQuantity) {
@@ -39,11 +42,15 @@ function App() {
         product
       )
       setCartProducts(newCartProductsArray)
+      window.localStorage.setItem('cartProductsLocalStorage', JSON.stringify(newCartProductsArray))
+       // TODO: Use local storage to handle cart product quantity here
   }
 
   function removeProductFromCart (productToBeRemoved) {
     const newCartProductsArray = cartProducts.filter(product => product.id !== productToBeRemoved.id);
     setCartProducts(newCartProductsArray)
+    window.localStorage.setItem('cartProductsLocalStorage', JSON.stringify(newCartProductsArray))
+    // TODO: Use local storage to remove cart product 
   }
 
   function handleProductSearch (searchInputValue) {
@@ -52,6 +59,8 @@ function App() {
 
   function clearCartProducts () {
     setCartProducts([])
+    window.localStorage.removeItem('cartProductsLocalStorage')
+     // TODO: Use local storage to remove cart product array
   }
 
   return (
