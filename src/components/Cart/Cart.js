@@ -10,7 +10,7 @@ export default function Cart(props) {
 
 
     const calculateTotal = () => {
-        const total = JSON.parse(window.localStorage.getItem('cartProductsLocalStorage')).reduce((accumulator, product) => {
+        const total = props.cartProducts.reduce((accumulator, product) => {
             return (accumulator + product.price * product.quantity)
         }, 0);
         return total;
@@ -36,8 +36,8 @@ export default function Cart(props) {
             ) : null}
             <div>
                 <h1>Cart</h1>
-                {JSON.parse(window.localStorage.getItem('cartProductsLocalStorage')) !== null && 
-                JSON.parse(window.localStorage.getItem('cartProductsLocalStorage')).map(item => (
+                {props.cartProducts.length ?
+                props.cartProducts.map(item => (
                     <div>
                         <p>{item.title}</p>
                         <img src={item.image} height={50} width={50} />
@@ -48,8 +48,8 @@ export default function Cart(props) {
                         <button onClick={() => props.removeProductFromCart(item)}>Delete Product</button>
                     </div>
                 )
-                )}
-                {JSON.parse(window.localStorage.getItem('cartProductsLocalStorage')).length ? (
+                ): null}
+                {props.cartProducts.length ? (
                     <div>
                         <p>TOTAL: {calculateTotal()}</p>
                         <button onClick={() => setPaymentPopupDisplay(true)}>Checkout</button>

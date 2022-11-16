@@ -1,4 +1,5 @@
 import React from 'react';
+import axios from 'axios';
 import { BrowserRouter, Route, Routes, Navigate } from 'react-router-dom';
 import Homepage from './components/Homepage/Homepage';
 import ProductDetail from './components/ProductDetail/ProductDetail';
@@ -7,11 +8,21 @@ import Navbar from './components/Navbar/Navbar';
 
 import './App.css';
 import Contact from './components/Contact/Contact';
+import { BASE_URL } from './helpers/API';
 
 // functional components and class components
 function App() {
   const [cartProducts, setCartProducts] = React.useState([]);
   const [productSearchValue, setProductSearchValue] = React.useState('')
+
+  React.useEffect(() => {
+    fetchCartProducts()
+  }, []);
+
+  function fetchCartProducts () {
+    axios.get(`${BASE_URL}/cart/1/products`)
+    .then(response => setCartProducts(response.data))
+  }
   
   function addProductToCart (productToAdd) {
     const existingProduct = cartProducts.find(product => product.id === productToAdd.id);
@@ -20,12 +31,15 @@ function App() {
       handleProductQuantityInCart(existingProduct, true)
     } else {
       // if the product does not exist in the array inject with a quantity of 1
-      console.log('before quantity',productToAdd)
-      const newCartProducts = [...cartProducts, {...productToAdd, quantity: 1}]
-      setCartProducts(newCartProducts);
-      window.localStorage.setItem('cartProductsLocalStorage', JSON.stringify(newCartProducts))
+      axios.post(`${BASE_URL}/cart/1/products`, {
+          "cart_id": 1,
+          "product_id": productToAdd.id
+      })
+      .then(response => {
+        const newCartProducts = [...cartProducts, response.data[0]]
+        setCartProducts(newCartProducts);
+      })
     }
-    // TODO: Use local storage to handle cart products here
   }
 
   function handleProductQuantityInCart (productToChangeQuantity, increaseQuantity) {
@@ -42,15 +56,15 @@ function App() {
         product
       )
       setCartProducts(newCartProductsArray)
-      window.localStorage.setItem('cartProductsLocalStorage', JSON.stringify(newCartProductsArray))
-       // TODO: Use local storage to handle cart product quantity here
   }
 
   function removeProductFromCart (productToBeRemoved) {
-    const newCartProductsArray = cartProducts.filter(product => product.id !== productToBeRemoved.id);
-    setCartProducts(newCartProductsArray)
-    window.localStorage.setItem('cartProductsLocalStorage', JSON.stringify(newCartProductsArray))
-    // TODO: Use local storage to remove cart product 
+    axios.delete(`${BASE_URL}/cart/1/products/${productToBeRemoved.cart_product_id}`)
+    .then(response => {
+      console.log(response)
+      const newCartProductsArray = cartProducts.filter(product => product.cart_product_id !== productToBeRemoved.cart_product_id);
+      setCartProducts(newCartProductsArray)
+    })
   }
 
   function handleProductSearch (searchInputValue) {

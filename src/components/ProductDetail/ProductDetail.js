@@ -1,14 +1,15 @@
 import React from 'react';
 import axios from 'axios';
 import { useParams } from "react-router-dom";
+import { BASE_URL } from '../../helpers/API';
 
 export default function ProductDetail (props) {
     const [selectedProduct, setSelectedProduct] = React.useState();
     const { id } = useParams();
     
     React.useEffect(() => {
-        axios.get(`https://fakestoreapi.com/products/${id}`)
-        .then(response => setSelectedProduct(response.data))
+        axios.get(`${BASE_URL}/products/${id}`)
+        .then(response => setSelectedProduct(response.data[0]))
     }, []);
 
     return (

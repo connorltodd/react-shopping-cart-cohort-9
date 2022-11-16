@@ -2,12 +2,13 @@ import React from 'react';
 import Product from '../Product/Product';
 import axios from 'axios';
 import './Homepage.css';
+import { BASE_URL } from '../../helpers/API';
 
 export default function Homepage (props) {
     const [products, setProducts] = React.useState([]);
 
     const fetchProducts = () => {
-        axios.get('https://fakestoreapi.com/products')
+        axios.get(`${BASE_URL}/products`)
         .then(response => setProducts(response.data));
     }
 
