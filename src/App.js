@@ -49,13 +49,19 @@ function App() {
         productToChangeQuantity.quantity -= 1;
       }
 
-      const newCartProductsArray = cartProducts.map(product => 
-        product.id === productToChangeQuantity.id ? 
-          {...productToChangeQuantity, quantity: productToChangeQuantity.quantity} 
-        : 
-        product
-      )
-      setCartProducts(newCartProductsArray)
+      axios.put(`${BASE_URL}/cart/1/products/${productToChangeQuantity.cart_product_id}`, {
+          quantity: productToChangeQuantity.quantity
+      })
+      .then(response => {
+        const newCartProductsArray = cartProducts.map(product => 
+          product.id === productToChangeQuantity.id ? 
+            {...productToChangeQuantity, quantity: productToChangeQuantity.quantity} 
+          : 
+          product
+        )
+        setCartProducts(newCartProductsArray)
+      })
+
   }
 
   function removeProductFromCart (productToBeRemoved) {
@@ -73,7 +79,6 @@ function App() {
 
   function clearCartProducts () {
     setCartProducts([])
-    window.localStorage.removeItem('cartProductsLocalStorage')
      // TODO: Use local storage to remove cart product array
   }
 

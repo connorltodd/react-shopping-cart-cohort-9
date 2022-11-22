@@ -1,5 +1,7 @@
+import axios from 'axios';
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
+import { BASE_URL } from '../../helpers/API';
 import Popup from '../Popup/Popup';
 
 export default function Cart(props) {
@@ -23,9 +25,16 @@ export default function Cart(props) {
     // this function will clear the cart and will redirect user back to main page
 
     const confirmOrder = () => {
-        props.clearCartProducts()
-        setPaymentPopupDisplay(false)
-        navigate('/products')
+        console.log('products_id', props.cartProducts.map(item => item.product_id))
+        axios.post(`${BASE_URL}/orders`, {
+            user_id: 1,
+            product_ids: props.cartProducts.map(item => item.product_id)
+        }) 
+        .then(response => {
+            props.clearCartProducts()
+            setPaymentPopupDisplay(false)
+            navigate('/products')
+        })
     }
 
 
@@ -38,7 +47,7 @@ export default function Cart(props) {
                 <h1>Cart</h1>
                 {props.cartProducts.length ?
                 props.cartProducts.map(item => (
-                    <div>
+                    <div key={item.id}>
                         <p>{item.title}</p>
                         <img src={item.image} height={50} width={50} />
                         <p>{item.price}</p>
